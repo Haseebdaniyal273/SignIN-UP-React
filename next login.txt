@@ -1,0 +1,55 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const Login = () =>{
+
+  const [username,setUsername]=React.useState("");
+  const [password,setPassword]=React.useState("");
+  const navigate = useNavigate();
+  const handleLogin = async () =>{
+    console.warn("username,password",username,password)
+    let result = await fetch('http://localhost:5000/',{
+    method: 'get',
+    body:JSON.stringify({username,password}),
+    headers:{
+      "Content-Type":'application/json',
+      "Accept":'application/json'
+    }
+    });
+    result = await result.json();
+    console.warn(result)
+
+    if(username == username){
+      // localStorage.setItem("users",JSON.stringify(result))
+      // console.warn(result)
+      alert("Hello")
+    }else{
+      alert("bye")
+    }
+    
+  }
+const next =  ()=>{
+ 
+  
+  navigate("/Register")
+}
+
+
+  return(
+    <div className="login">
+      <h1>Login</h1>
+      <input type="text" className = "inputBox" placeholder="Enter Username" 
+      onChange={(e)=> setUsername(e.target.value)} value={username} />
+      <input type="password" className = "inputBox" placeholder="Enter Password" 
+      onChange={(e)=> setPassword(e.target.value)} value={password} />
+    <button onClick={handleLogin} className="appButton" type="button">Login</button>
+    
+    <button onClick={next} className="appButton" type="button">next</button>
+    </div>
+
+
+  )
+
+
+}
+export default Login

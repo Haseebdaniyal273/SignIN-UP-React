@@ -1,0 +1,79 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate,Routes } from "react-router-dom";
+// import { useHistory } from "react-router-dom"
+
+const Login = () => {
+
+const [username,setUsername]=useState("")
+const [password,setPassword]=useState("")
+const navigate = useNavigate();
+useEffect(()=>{
+  const auth = localStorage.getItem('user');
+  if (auth)
+  {
+    navigate("/")
+  }
+
+},[])
+
+
+// const history = useHistory();
+// useEffect(()=>{
+// if (localStorage.getItem("user-info")){
+//     history.push("./")
+// }
+
+// },[])
+
+async function login(){
+ 
+    console.warn(username,password)
+    let items = {username,password};
+
+    let results =await fetch("http://localhost:5000/",{
+
+    method:'POST',
+    headers:{
+        "Content-Type":'application/json',
+        "Accept":'application/json'
+    },
+    
+    body:JSON.stringify(items)
+
+
+    });
+    results = await results.json()
+
+    // localStorage.setItem("user-info",JSON.stringify(results))
+    // history.push("./")
+  //  console.warn(results)
+   if(results.name){
+    localStorage.setItem("users",JSON.stringify(results));
+    navigate("/")
+   }else{
+    alert("Please Enter Right Details")
+   }
+}
+
+  return (
+    <div className="col-sm-6 offset-sm-3 py-5">
+      <h1>Login Page</h1>
+      <input
+        type="text"
+        className="form-control" onChange={(e)=>setUsername(e.target.value)}
+        placeholder="Username"
+      ></input>
+      <br />
+      <input
+        type="password" 
+        className="form-control" onChange={(e)=>setPassword(e.target.value)}
+        placeholder="Password"
+      ></input>
+      <br />
+      <button onClick={login} className="btn btn-primary">login</button>
+    </div>
+
+  );
+};
+
+export default Login;
